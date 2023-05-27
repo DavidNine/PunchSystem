@@ -110,7 +110,7 @@
 
         .btncontainer button{
             margin:auto;
-            padding: 40px 130px;
+            padding: 20px 130px;
             background-color: #cfcecc;
             border: 0px;
             border-radius: 20px;
@@ -140,6 +140,57 @@
         }
 
 
+        .record-text{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .record-text h1{
+            font-size: 72px;
+        }
+
+        .record-text p{
+            font-size: 24px;
+        }
+
+        .input-container{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .input-container input{
+            
+            font-size: 20px;
+            margin-right: 10px;
+            
+        }
+
+        .input-container .record-search-btn button{
+            font-size: 20px;
+            padding: 8px 15px;
+            background-color: #cfcecc;
+            border: 0px;
+            border-radius: 20px;
+            transition: .3s;
+        }
+        
+        .input-container .record-search-btn button:hover{
+            background-color: #b4b4b4;
+        }
+        .record {
+
+            padding-top: 30px;
+            margin:30px auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            
+            font-size: xx-large;
+            font-family: monospace;
+        }
+
     </style>
 </head>
 <body onload="startTime()">
@@ -149,8 +200,8 @@
             <img src="pics/Cat.jpg" alt="">
             <h3>Ninebro</h3>
         </div>
-        <button class="tablinks" onclick="openTab(event, 'Punch')" id="defaultOpen">Punch</button>
-        <button class="tablinks" onclick="openTab(event, 'Paris')">RecordSearch</button>
+        <button class="tablinks" onclick="openTab(event, 'Punch')">Punch</button>
+        <button class="tablinks" onclick="openTab(event, 'Record')" id="defaultOpen">RecordSearch</button>
         <button class="tablinks" onclick="openTab(event, 'Tokyo')">SalarySearch</button>
     </div>
 
@@ -169,14 +220,23 @@
         </div>
 
         <div class="btncontainer">
-            <button>punch in</button>
-            <button>punch out</button>
+            <button onclick="punch('IN')">punch in</button>
+            <button onclick="punch('OUT')">punch out</button>
         </div>
     </div>
 
-    <div id="Paris" class="tabcontent">
-        <h3>Paris</h3>
-        <p>Paris is the capital of France.</p> 
+    <div id="Record" class="tabcontent">
+        <div class="record-text">
+            <h1>Record</h1>
+            <p>Search for your punch record.</p> 
+        </div>
+        <div class="input-container">
+            <input type="date" id="searchingDate">
+            <div class="record-search-btn">
+                <button onclick="recordSearch()">Search</button>
+            </div>
+        </div>
+        <div class="record" id="record"></div>
     </div>
 
     <div id="Tokyo" class="tabcontent">
@@ -187,8 +247,18 @@
    
 </body>
 
-    <script>
 
+<script>
+    
+    /* Record data */
+    let PunchinArray = [];
+    let FixTestData = {
+            Date:"2023-05-27",
+            Time:"17:05:33",
+            PunchState:"IN",
+        }
+    PunchinArray.push(FixTestData);
+    
     /* bar controler */
     function openTab(evt, cityName) {
         var i, tabcontent, tablinks;
@@ -202,7 +272,9 @@
         }
         document.getElementById(cityName).style.display = "block";
         evt.currentTarget.className += " active";
-   
+        
+        const RecordElement = document.getElementById('record');
+        RecordElement.innerText = ""
     }
     
     
@@ -254,6 +326,51 @@
     function checkTime(i) {
         if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
         return i;
+    }
+
+
+    /* Record search */
+    function recordSearch() {
+        
+        const DateElement = document.getElementById('searchingDate');
+        const DateVal = DateElement.value;
+
+        // initialize
+        
+        const RecordElement = document.getElementById('record');
+        RecordElement.innerText = "";
+        for (let i=0;i<PunchinArray.length;i++){
+            if (DateVal.localeCompare(PunchinArray[i].Date) === 0)
+            {
+                RecordElement.innerText += "Punch Time:"+PunchinArray[i].Time+" --- "+"Punch In/Out:" + PunchinArray[i].PunchState+"\n";
+            }
+        }
+    }
+
+    function punch(state) {
+        const today = new Date();
+        let h = today.getHours();
+        let m = today.getMinutes(); 
+        let s = today.getSeconds();
+
+        m = checkTime(m);
+        s = checkTime(s);
+
+        let Y = today.getFullYear();
+        let M = today.getMonth()+1; // month index start from 0
+        let D = today.getDate();
+
+        M = checkTime(M);
+        D = checkTime(D);
+
+        console.log(Y+"-"+M+"-"+D);
+        let RecordData = {
+            Date:Y+"-"+M+"-"+D,
+            Time:h + ":" + m + ":" + s,
+            PunchState:state,
+        }
+        PunchinArray.push(RecordData)
+        alert("punch success.\nTime:"+ h + ":" + m + ":" + s +"\nState:"+state);
     }
 
     </script>
