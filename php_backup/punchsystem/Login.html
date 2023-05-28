@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="Login.css">
+    <link rel="stylesheet" href="form.php">
+</head>
+<body>
+    <div class='Container'>
+      <form method="POST" action="form.php">
+        <h2>Login</h2>
+        <div class='form-input'>
+          <label>Account:</label>
+          <input type="text" id="account"/>
+        </div>
+        <div class='form-input'>
+          <label>Password:</label>
+          <input type="password" id="password"/>
+        </div>
+        <div class='btn-container'>
+          <button onclick="VerifyStatus()">Login</button>
+        </div>
+        <div class='paragraph-containr'>
+          <p>Doesn't have account ?&nbsp;&nbsp;&nbsp;</p>
+          <a href="Register.html">Create a new one !</a>
+        </div>
+        </form>
+    </div>
+</body>
+
+
+<script> 
+  function VerifyStatus(){
+    var account = document.getElementById('account');
+    var password = document.getElementById('password');
+    
+    var acc_val = account.value;
+    var pas_val = password.value;
+    
+    window.location.href ="form.php";
+    
+    if (acc_val != "Ninebro"){
+      alert("UserName error, please check your username.")
+    }
+    else if (pas_val != "a123456"){
+      alert("Password error, please check your password.")
+    }
+    else{
+      window.location.href ="Home.html";
+    }
+  }
+</script>
+</html>

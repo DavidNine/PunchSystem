@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="Register.css">
+    <title>Register</title>
+</head>
+<body>
+    <form method="POST" action="register.php" onsubmit="return VerifyStatus();">
+        <div class='Container'>
+            <a href="index.html" class="arrow">&#8617;</a>
+            <h2>Create account</h2>
+            <div class='form-input'>
+                <label for="account">Account:</label>
+                <input type="text" name="account" id="account"/>
+            </div>
+            <div class='form-input'>
+                <label for="password">Password:</label>
+                <input type="password" name="password" id="password"/>
+            </div>
+            <div class='form-input'>
+                <label>Confirm Password:</label>
+                <input type="password" id="confirmPass"/>
+            </div>
+            <div class='btn-container'>
+                <button type="submit">Register</button>
+            </div>
+        </div>
+    </form>
+</body>
+
+<script>
+    function VerifyStatus() {
+ 
+            // User clicked OK, proceed to the next page
+            var confirmPass = document.getElementById('confirmPass');
+            var password = document.getElementById('password');
+            
+            var con_val = confirmPass.value;
+            var pas_val = password.value;
+            
+
+            if (con_val === pas_val){
+                return true;
+            }   
+            else {
+                alert("Password error: password and confirm pass is not the same.");
+                return false;
+            }
+
+        
+    }
+</script>
+</html>
