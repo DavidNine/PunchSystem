@@ -2,10 +2,11 @@
     session_start();
     
     $account = $_SESSION['account'];
+    $searching_account = $_GET['account'];
     if (isset($_POST['searchingDate'])){
         $searchingDate = $_POST['searchingDate'];
     }
-    
+
 ?>
 
 
@@ -201,7 +202,23 @@
             font-size: xx-large;
             font-family: monospace;
         }
-
+        .recordData-container{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 65%;
+            text-align: center;
+        }
+        .recordData-container-form{
+            border-bottom: #757575 solid 1px;
+            margin-top: 20px;
+        }
+        .recordData{
+            font-family: monospace;
+            font-size: 34px;
+            margin: 7px auto;
+            width: 50%;
+        }
     </style>
 </head>
 <body onload="startTime()">
@@ -209,11 +226,14 @@
     <div class="tab">
         <div class="headshot">
             <img src="pics/Cat.jpg" alt="">
-            <h3><?php echo "<script>console.log('test');</script>"?></h3>
+            <h3><?php echo $account?></h3>
         </div>
         <button class="tablinks" onclick="openTab(event, 'Punch')">Punch</button>
         <button class="tablinks" onclick="openTab(event, 'Record')" id="defaultOpen">RecordSearch</button>
         <button class="tablinks" onclick="openTab(event, 'Tokyo')">SalarySearch</button>
+        <div class="logout-btn-container">
+            <button class="tablinks" onclick="Logout()">Logout</button>
+        </div>
     </div>
 
     <div id="Punch" class="tabcontent" >
@@ -234,13 +254,13 @@
             
             <div class="btncontainer">
                 <button type="button" onclick="punch('IN')">punch in</button>
-                <button onclick="punch('OUT')">punch out</button>
+                <button type="button" onclick="punch('OUT')">punch out</button>
             </div>
         </form>
     </div>
 
     <div id="Record" class="tabcontent">
-            <form method="POST" action="Home.php">
+            <form id="RecordSear" method="POST" action="">
             
             <div class="record-text">
                 <h1>Record</h1>
@@ -250,11 +270,60 @@
             <div class="input-container">
                 <input type="date" id="searchingDate" name="searchingDate">
                 <div class="record-search-btn">
-                    <button type="submit">Search</button>
+                    <button type="button" onclick="recordSearch()">Search</button>
                 </div>
             </div>
             <div class="record" id="">
                 <?php echo ("Search Date: " .  $searchingDate ); ?>
+                <?php
+                    $host = "localhost";
+                    $username = "root";
+                    $userpass = "";
+                    $dbname = "punchsystem";
+                    $con = mysqli_connect($host, $username, $userpass, $dbname);
+                    
+                    if (!$con) {
+                        die("Connection failed!" . mysqli_connect_error());
+                    }
+                    
+                    // Execute a query to fetch data
+                    $sql = "SELECT * FROM `punch-record` WHERE 1;";
+                    $result = mysqli_query($con, $sql);
+                    
+                    if ($result) {
+                        // Check if there are any rows returned
+                        if (mysqli_num_rows($result) > 0) {
+                            // Fetch and display each account value
+                            echo "
+                                <div class='recordData-container recordData-container-form'>
+                                    <div class='recordData'>Time</div>
+                                    <div class='recordData'>IN/OUT</div>
+                                </div>";
+                            while ($row = mysqli_fetch_assoc($result)) {
+                                $acc = $row['account'];
+                                $record_date = $row['date'];
+                                $record_time = $row['time'];
+                                $record_stat = $row['status'];
+                                if ($record_date === $searchingDate && $searching_account === $acc){
+                                    echo "
+                                        <div class='recordData-container'>
+                                            <div class='recordData'>$record_time</div>
+                                            <div class='recordData'>$record_stat</div>
+                                        </div>";
+                                }
+                            }
+                        } else {
+                            echo "No records found.";
+                        }
+                    } else {
+                        echo "Error: " . mysqli_error($con);
+                    }
+                    
+                    // Free the result set
+                    mysqli_free_result($result);
+                    
+                    mysqli_close($con);
+                 ?>
             </div>
         </form>
     </div>
@@ -264,22 +333,14 @@
         <h3>Tokyo</h3>
         <p>Tokyo is the capital of Japan.</p>
     </div>
-
+    
    
 </body>
 
 
 <script>
     
-    /* Record data */
-    let PunchinArray = [];
-    let FixTestData = {
-            Date:"2023-05-27",
-            Time:"17:05:33",
-            PunchState:"IN",
-        }
-    PunchinArray.push(FixTestData);
-    
+
     /* bar controler */
     function openTab(evt, cityName) {
         var i, tabcontent, tablinks;
@@ -351,19 +412,10 @@
     /* Record search */
     function recordSearch() {
         
-        const DateElement = document.getElementById('searchingDate');
-        const DateVal = DateElement.value;
-
-        // initialize
-        
-        const RecordElement = document.getElementById('record');
-        RecordElement.innerText = "";
-        for (let i=0;i<PunchinArray.length;i++){
-            if (DateVal.localeCompare(PunchinArray[i].Date) === 0)
-            {
-                RecordElement.innerText += "Punch Time:"+PunchinArray[i].Time+" --- "+"Punch In/Out:" + PunchinArray[i].PunchState+"\n";
-            }
-        }
+        const account = "<?php echo $account;?>"
+        var Action = "Home.php?account=" + encodeURIComponent(account);
+        document.getElementById('RecordSear').action = Action;
+        document.getElementById('RecordSear').submit();
     }
 
     function punch(state) {
@@ -397,6 +449,15 @@
 
         
 
+    }
+    
+    // logout function
+
+    
+    function Logout()
+    {
+        alert("Logout successful");
+        window.location.href = "index.html";
     }
 
     </script>

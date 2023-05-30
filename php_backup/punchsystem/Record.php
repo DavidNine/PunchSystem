@@ -14,17 +14,11 @@
     }
 
     // Execute a query to fetch data
-    $sql = "SELECT account, column2 FROM YourTable";
+    $sql = "SELECT * FROM `punch-record` WHERE 1;";
     $result = mysqli_query($con, $sql);
 
-    // Fetch and store the data
-    $data = array();
-    if (mysqli_num_rows($result) > 0) {
-        while ($row = mysqli_fetch_assoc($result)) {
-            $data[] = $row; // Add each row to the data array
-        }
-    }
-
+    echo $result;
+   
     mysqli_close($con);
 ?>
 
