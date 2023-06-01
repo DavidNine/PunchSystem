@@ -1,13 +1,22 @@
-body{
+body {
+    margin: 0;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
 }
 
-.Container{
+.arrow {
+    text-decoration: none;
+    font-size: xxx-large;
+    color: black;
+ }
+
+.container{
     width: 100%;
     max-width: 600px;
+    
+    
     padding: 20px;
     background-color: #fff;
     border-radius: 10px;
@@ -17,27 +26,40 @@ body{
     -moz-box-shadow: 8px 10px 51px 0px rgba(0,0,0,0.75);
 }
 
-.Container h2{
+
+.container h2{
     font-size: xxx-large;
     text-align: center;
     padding-bottom: 10%;
     width: auto;
 }
 
-.form-input{
+.input-container {
+    
     display: flex;
-    justify-content: start;
+    align-items: center;
+    justify-content: center;
+
     margin: 20px auto;
+    
 }
 
-.form-input label {
+.input-container label{
+    
     font-size: x-large;
-    margin: 0 auto;
+    margin: auto;
+    text-align: center;
+    width: 50%;
 }
 
-.form-input input {
+.input-container input{
     font-size: x-large;
+    text-align: left;
+    width: 50%;
+    margin: auto;
 }
+
+
 
 .btn-container{
     display: flex;
@@ -56,21 +78,13 @@ body{
     cursor: pointer;
 }
 
+.btn-container button a{
+    color:black;
+    text-decoration: none;
+}
 
 .btn-container button:hover{
     background-color: #45a049;
 }
 
-.paragraph-containr{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}  
 
-.paragraph-containr a{
-    cursor: pointer;
-    transition: .3s;
-}
-.paragraph-containr a:hover{
-    color: cornflowerblue;
-}

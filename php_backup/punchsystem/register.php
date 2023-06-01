@@ -2,9 +2,9 @@
     // getting all values from the HTML form
    
     
-    $account = $_POST['account'];
-    $password = $_POST['password'];
-
+    $account    = $_POST['account'];
+    $password   = $_POST['password'];
+    $email      = $_POST['email'];
     
     // database details
     $host = "localhost";
@@ -24,7 +24,7 @@
     // $sql = "INSERT INTO `UserData`(`account`, `password`) VALUES (\'acut74569\',\'456852aa\');";
 
     // $sql = "SELECT * FROM `UserData` WHERE 1;";
-    $sql = "INSERT INTO UserData (account, password) VALUES ('$account','$password');";
+    $sql = "INSERT INTO UserData (account, password, email) VALUES ('$account','$password','$email');";
     // $query = "INSERT INTO UserData (`account`, `password`) VALUES ('$account','$password');";
     $result = mysqli_query($con, $sql);
     

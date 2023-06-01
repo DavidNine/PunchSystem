@@ -375,17 +375,14 @@
                         // Check if there are any rows returned
                         if (mysqli_num_rows($result) > 0) {
                             // Fetch and display each account value
+                            
                             echo "
-                                <script>
-                                    sleep(3);
-
-                                    document.getElementById('Spage').click();
-
-                                </script>
                                 <div class='recordData-container recordData-container-form'>
                                     <div class='recordData'>Time</div>
                                     <div class='recordData'>IN/OUT</div>
-                                </div>";
+                                </div>
+                                ";
+                            
                             while ($row = mysqli_fetch_assoc($result)) {
                                 $acc = $row['account'];
                                 $record_date = $row['date'];

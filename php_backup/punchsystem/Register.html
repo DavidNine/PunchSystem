@@ -24,6 +24,10 @@
                 <label>Confirm Password:</label>
                 <input type="password" id="confirmPass"/>
             </div>
+            <div class='form-input'>
+                <label>Email:</label>
+                <input type="email" name="email" id="email"/>
+            </div>
             <div class='btn-container'>
                 <button type="submit">Register</button>
             </div>
@@ -37,9 +41,11 @@
             // User clicked OK, proceed to the next page
             var confirmPass = document.getElementById('confirmPass');
             var password = document.getElementById('password');
+            var email = document.getElementById('email');
             
             var con_val = confirmPass.value;
             var pas_val = password.value;
+            var email_val = email.value;
             
 
             if (con_val === pas_val){
