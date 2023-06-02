@@ -38,6 +38,8 @@
 <script>
     function VerifyStatus() {
  
+        
+
             // User clicked OK, proceed to the next page
             var confirmPass = document.getElementById('confirmPass');
             var password = document.getElementById('password');
@@ -46,7 +48,7 @@
             var con_val = confirmPass.value;
             var pas_val = password.value;
             var email_val = email.value;
-            
+
 
             if (con_val === pas_val){
                 return true;
@@ -55,8 +57,9 @@
                 alert("Password error: password and confirm pass is not the same.");
                 return false;
             }
-
-        
     }
+
+
+
 </script>
 </html>

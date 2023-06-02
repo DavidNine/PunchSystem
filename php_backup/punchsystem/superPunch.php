@@ -1,0 +1,33 @@
+<?php
+
+    $account = $_GET['acc'];
+    $Time = $_GET['time'];
+    $Date = $_GET['date'];
+    $status = $_GET['stat'];
+    
+
+    $host = "localhost";
+    $username = "root";
+    $userpass = "";
+    $dbname = "punchsystem";
+
+     $con = mysqli_connect($host, $username, $userpass, $dbname);
+
+    if (!$con) {
+        die("Connection failed!" . mysqli_connect_error());
+    }
+    $sql = "INSERT INTO `punch-record`(`account`, `date`, `time`, `status`) VALUES ('$account','$Date','$Time','$status');";
+    $ret = mysqli_query($con,$sql);
+
+    // // $sql = "INSERT INTO punch-record (account,date,time,status) VALUES ('$account','$Date','$Time','$status');";
+
+    if ($ret){
+        echo "<script> alert('punch '+'$status'+' successful');window.location.href='superHome.php?account=admin';</script>";
+    }
+    else {
+        echo "<script> alert('punch '+'$status'+' fail');window.location.href='superHome.php?account=admin';</script>";
+    }
+    
+    mysqli_close($con);
+
+?>

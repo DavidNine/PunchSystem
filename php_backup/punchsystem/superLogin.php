@@ -9,7 +9,7 @@
 </head>
 <body>
     <div class='Container'>
-      <form method="POST" action="form.php" id="loginForm">
+      <form method="POST" action="superForm.php" id="loginForm">
         <h2>Login</h2>
         <div class='form-input'>
           <label for="account">Account:</label>
@@ -22,13 +22,7 @@
         <div class='btn-container'>
           <button type="button" onclick="VerifyStatus()">Login</button>
         </div>
-        <div class='paragraph-containr'>
-          <p>Doesn't have account ?&nbsp;&nbsp;&nbsp;</p>
-          <a href="Register.html">Create a new one !</a>
-        </div>
-        <div class="paragraph-containr">
-          <a href="forgetPass.php">Forgot Password?</a>
-        </div>
+
         </form>
     </div>  
 </body>
