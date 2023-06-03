@@ -114,7 +114,7 @@
                     ?>
                 </div>
                 <div class="add-container">
-                    <h3>Want to add record ?</h3>
+                    <h3>Want to add record?</h3>
                     <button type="button" onclick="addRecord()">Go to add</button>
                 </div>
             </div>
