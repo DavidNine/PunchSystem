@@ -1,7 +1,7 @@
 <?php
-    $del_acc = $_GET['account'];
-    $del_time = $_GET['time'];
-    $Date = $_GET['date'];
+    $del_account = $_GET['account'];
+    $del_month = $_GET['month'];
+
 
 
     $host = "localhost";
@@ -17,12 +17,12 @@
     }
 
 
-    $sql = "DELETE FROM `punch-record` WHERE `account` = '$del_acc' AND `time` = '$del_time';";
+    $sql = "DELETE FROM `Salary` WHERE `account` = '$del_account' AND `month` = '$del_month';";
     $result = mysqli_query($con, $sql);
     if ($result) {
         // Account is correct
         // Redirect to a success page or perform any necessary actions
-        echo "<script> alert('Delete successful');window.location.href='superHome.php?account=admin&date=$Date&page=Rpage';</script>";
+        echo "<script> alert('Delete successful');window.location.href='superHome.php?month=$del_month&page=Spage';</script>";
     }
     else{
         echo "<script> alert('Delete Fail');window.history.back();</script>";

@@ -22,7 +22,7 @@
     // // $sql = "INSERT INTO punch-record (account,date,time,status) VALUES ('$account','$Date','$Time','$status');";
 
     if ($ret){
-        echo "<script> alert('punch '+'$status'+' successful');window.location.href='superHome.php?account=admin';</script>";
+        echo "<script> alert('punch '+'$status'+' successful');window.location.href='superHome.php?account=admin&date=$Date&page=Rpage';</script>";
     }
     else {
         echo "<script> alert('punch '+'$status'+' fail');window.location.href='superHome.php?account=admin';</script>";

@@ -299,6 +299,18 @@
         margin-top: 5vh;
         padding: 20px;
     }
+
+
+    table {
+        border-collapse: separate;
+        border-spacing: 3vw 0px; /* 調整間距大小 */
+        border: #757575 solid 1px;
+    }
+
+    td, th {
+        padding: 5px 40px; /* 調整內部間距大小 */
+    }
+
     </style>
 </head>
 
@@ -371,39 +383,40 @@
                     $sql = "SELECT * FROM `punch-record` WHERE 1;";
                     $result = mysqli_query($con, $sql);
                     
-                    if ($result) {
+                    echo "<table>";
+                    echo "<tr><th>time</th><th>status</th></tr>";
+                    if ($result) 
+                    {
                         // Check if there are any rows returned
-                        if (mysqli_num_rows($result) > 0) {
+                        if (mysqli_num_rows($result) > 0) 
+                        {
                             // Fetch and display each account value
                             
-                            echo "
-                                <div class='recordData-container recordData-container-form'>
-                                    <div class='recordData'>Time</div>
-                                    <div class='recordData'>IN/OUT</div>
-                                </div>
-                                ";
-                            
-                            while ($row = mysqli_fetch_assoc($result)) {
+                            while ($row = mysqli_fetch_assoc($result)) 
+                            {
                                 $acc = $row['account'];
                                 $record_date = $row['date'];
                                 $record_time = $row['time'];
                                 $record_stat = $row['status'];
-                                if ($record_date === $searchingDate && $searching_account === $acc){
-                                    echo "
-                                        <div class='recordData-container'>
-                                            <div class='recordData'>$record_time</div>
-                                            <div class='recordData'>$record_stat</div>
-                                        </div>";
+                                if ($acc === $account && $record_date === $searchingDate)
+                                {
+                                    echo "<tr>
+                                      <td>$record_time</td>
+                                      <td>$record_stat</td>
+                                    </tr>";
                                 }
                             }
                         } 
-                        else {
+                        else 
+                        {
                             echo "No records found.";
                         }
-                    } else {
+                    } 
+                    else 
+                    {
                         echo "Error: " . mysqli_error($con);
                     }
-                    
+                    echo "</table>";
                     // Free the result set
                     mysqli_free_result($result);
                     
@@ -421,7 +434,7 @@
                     <h1>Search your Salary</h1>
                 </div>
                 <div class="Salary-searching-container">
-                    <input type="Text" placeholder="YYYYMM" id="Salary-search">
+                    <input type="month" id="Salary-search">
                     <button type="button" onclick="Salary()">search</button>
                 </div>
                 <div class="Salary-display">
@@ -446,37 +459,17 @@
                             // Check if there are any rows returned
                             if (mysqli_num_rows($result) > 0) {
                                 // Fetch and display each account value
-                                echo "
-                                    <div class='Salary-display-content'>
-                                        <div class='SalaryData'>Month</div>
-                                        <div class='SalaryData'>Salary</div>
-                                    </div>";
+                                    echo "<table>";
+                                    echo "<tr><th>Date</th><th>Salary</th></tr>";
                                     while ($row = mysqli_fetch_assoc($result)) {
                                         $acc = $row['account'];
                                         $Salary_date = $row['month'];
                                         $Salary_amount = $row['salary_amount'];
-                                        $retired = $Salary_amount*0.03;
-                                        $Wkhours = $Salary_amount/200;
                                         if ($Salary_date === $searchingMonth && $account === $acc){
-                                            echo "
-                                            <div class='Salary-display-content'>
-                                            <div class='SalaryData'>$Salary_date</div>
-                                            <div class='SalaryData'>$Salary_amount</div>
-                                            </div>
-                                            <div class='Salary-display-content' >
-                                                <div class='SalaryData SalaryDetail'>Detail</div>
-                                            </div>
-                                            <div class='Salary-display-content'>
-                                                <div class='SalaryData'>Retired</div>
-                                                <div class='SalaryData'>$retired</div>
-                                            </div>
-                                            <div class='Salary-display-content'>
-                                                <div class='SalaryData'>Working-hour</div>
-                                                <div class='SalaryData'>$Wkhours</div>
-                                            </div>
-                                            
-                                            
-                                            ";
+                                            echo"<tr>
+                                            <td>$Salary_date</td>
+                                            <td>$Salary_amount</td>
+                                            </tr>";
                                         }
                                 }
                             } 
@@ -488,12 +481,10 @@
                             echo "Error: " . mysqli_error($con);
                         }
                         
-                        // Free the result set
+                        echo "</table>";
                         mysqli_free_result($result);
-                        
                         mysqli_close($con);
                             
-                            echo "<h1></h1>";
                     ?>
                 </div>
             </div>
@@ -592,7 +583,7 @@ function recordSearch() {
 
 function Salary() {
     
-    const date = document.getElementById('Salary-search').value;
+    const date = document.getElementById('Salary-search').value.replace(/-/g,"");
     const account = "<?php echo $account;?>";
 
     

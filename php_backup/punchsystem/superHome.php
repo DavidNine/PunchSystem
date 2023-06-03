@@ -123,8 +123,77 @@
     </div>
 
                     
-    <div id="Salary" class="tabcontent ">    
-     
+    <div id="Salary" class="tabcontent ">
+        <form action="" id="Salary-form" method="POST">
+            <div class="Salary-container">
+                <div class="header-container">
+                    <h1>Salary management</h1>
+                </div>
+                <div class="input-container">
+                    <input type="month" name="month" id="month">
+                    <button type="button" onclick="salarySearch()">Search</button>
+                </div>
+                <div class="salary-display-container">
+                    <?php
+                        $targetDate = $_GET['month'];
+                        
+                        $host = "localhost";
+                        $username = "root";
+                        $userpass = "";
+                        $dbname = "punchsystem";
+                        $con = mysqli_connect($host, $username, $userpass, $dbname);
+                        
+                        if (!$con) {
+                            die("Connection failed!" . mysqli_connect_error());
+                        }
+                        
+                        $sql = "SELECT * FROM `Salary` WHERE `month` = '$targetDate';";
+                        $result = mysqli_query($con, $sql);
+                        
+                        echo "<table>";
+                        echo "<tr><th>account</th><th>month</th><th>salary</th></tr>";
+                        if ($result) 
+                        {
+                            if (mysqli_num_rows($result) > 0) 
+                            {
+                                while ($row = mysqli_fetch_assoc($result)) 
+                                {
+                                    $acc = $row['account'];
+                                    $salary  = $row['salary_amount'];
+                                    $month   = $row['month'];
+
+                                    if ($targetDate === $month)
+                                    {
+                                        echo "<tr>
+                                        <td>$acc</td>
+                                        <td>$month</td>
+                                        <td>$salary</td>
+                                        <td><button type='button' onclick=\"deleteSalary('$acc','$month')\">刪除</button></td>
+                                        </tr>";
+                                    }
+                                }
+                            } 
+                            else 
+                            {
+                                echo "No records found.";
+                            }
+                        } 
+                        else 
+                        {
+                            echo "Error: " . mysqli_error($con);
+                        }
+                        echo "</table>";
+                        // Free the result set
+                        mysqli_free_result($result);
+                        mysqli_close($con);
+                    ?>
+                </div>
+                <div class="salary-add-container">
+                    <h3>Assign Salary</h3>
+                    <button type="button" onclick="salaryAdd()">Go to Assign</button>
+                </div>
+            </div>
+        </form>
     </div>
 
 
@@ -132,114 +201,141 @@
 
 
 <script> 
-/* bar controler */
-const page = 
-'<?php
-    $page = $_GET['page'];
-    if ($page){
-        echo $page;
-    }
-    else {
-        echo 'Ppage';
-    }
-?>'
-document.getElementById(page).click();
-function openTab(evt, cityName) {
-    var i, tabcontent, tablinks;
-    tabcontent = document.getElementsByClassName("tabcontent");
-    for (i = 0; i < tabcontent.length; i++) {
-        tabcontent[i].style.display = "none";
-    }
-    tablinks = document.getElementsByClassName("tablinks");
-    for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" active", "");
-    }
-    document.getElementById(cityName).style.display = "block";
-    evt.currentTarget.className += " active";
-
-    const RecordElement = document.getElementById('record');
-    RecordElement.innerText = "";
-}
-
-/* text typing animation */
-function typeText(element, text, delay, callback) {
-    var index = 0;
-    var interval = setInterval(function() {
-        element.textContent = text.slice(0, index);
-        index++;
-
-        if (index > text.length) {
-            clearInterval(interval);
-            if (callback) {
-                callback();
-            }
+    /* bar controler */1
+    const page = 
+    '<?php
+        $page = $_GET['page'];
+        if ($page){
+            echo $page;
         }
-    }, delay);
-}
-var textElement1 = document.getElementById('typing-text');
-var text1 = 'Welcome <?php echo ( $account );?>!';
+        else {
+            echo 'Ppage';
+        }
+    ?>'
+    document.getElementById(page).click();
+    function openTab(evt, cityName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(cityName).style.display = "block";
+        evt.currentTarget.className += " active";
 
-var textElement2 = document.getElementById('typing-ready');
-var text2 = 'What will happen if the world without you ?';
-typeText(textElement1, text1, 100, function() {
-    typeText(textElement2, text2, 100);
-});
+        const RecordElement = document.getElementById('record');
+        RecordElement.innerText = "";
+    }
 
+    /* text typing animation */
+    function typeText(element, text, delay, callback) {
+        var index = 0;
+        var interval = setInterval(function() {
+            element.textContent = text.slice(0, index);
+            index++;
 
+            if (index > text.length) {
+                clearInterval(interval);
+                if (callback) {
+                    callback();
+                }
+            }
+        }, delay);
+    }
+    var textElement1 = document.getElementById('typing-text');
+    var text1 = 'Welcome <?php echo ( $account );?>!';
 
-
-/* clock controler */
-function startTime() 
-{
-    const today = new Date();
-    let h = today.getHours();
-    let m = today.getMinutes();
-    let s = today.getSeconds();
-    m = checkTime(m);
-    s = checkTime(s);
-    document.getElementById('time').innerHTML = h + ":" + m + ":" + s;
-    setTimeout(startTime, 1000);
-}
-
-function checkTime(i) 
-{
-    if (i < 10) {
-        i = "0" + i
-    }; // add zero in front of numbers < 10
-    return i;
-}
-
-
-/* Record search */
-function recordSearch() 
-{
-    var elem = document.getElementById('recordDate');
-    var targetDate = elem.value;
-    var account = "<?php echo $account?>";
-    var act = "superHome.php?account=" + encodeURIComponent(account)+"&date=" + encodeURIComponent(targetDate)+"&page=Rpage";
-    document.getElementById('Record-form').action = act;
-    document.getElementById('Record-form').submit();
-}
-
-function deleteData(account,time)
-{
-    var actw = "deletePunchData.php?account="+encodeURIComponent(account)+"&time="+encodeURIComponent(time);
-    document.getElementById('Record-form').action = actw;
-    document.getElementById('Record-form').submit();
-}
+    var textElement2 = document.getElementById('typing-ready');
+    var text2 = 'What will happen if the world without you ?';
+    typeText(textElement1, text1, 100, function() {
+        typeText(textElement2, text2, 100);
+    });
 
 
-function addRecord()
-{
-    window.location.href = "superAdd.php";
-}
 
-// logout function
 
-function Logout() {
-    alert("Logout successful");
-    window.location.href = "superLogin.php";
-}
+    /* clock controler */
+    function startTime() 
+    {
+        const today = new Date();
+        let h = today.getHours();
+        let m = today.getMinutes();
+        let s = today.getSeconds();
+        m = checkTime(m);
+        s = checkTime(s);
+        document.getElementById('time').innerHTML = h + ":" + m + ":" + s;
+        setTimeout(startTime, 1000);
+    }
+
+    function checkTime(i) 
+    {
+        if (i < 10) {
+            i = "0" + i
+        }; // add zero in front of numbers < 10
+        return i;
+    }
+
+
+    /* Record search */
+    function recordSearch() 
+    {
+        var elem = document.getElementById('recordDate');
+        var targetDate = elem.value;
+        var account = "<?php echo $account?>";
+        var act = "superHome.php?account=" + encodeURIComponent(account)+"&date=" + encodeURIComponent(targetDate)+"&page=Rpage";
+        document.getElementById('Record-form').action = act;
+        document.getElementById('Record-form').submit();
+    }
+
+    function deleteData(account,time)
+    {
+        var Date = "<?php echo $_GET['date'];?>";
+        var actw = "deletePunchData.php?account="+encodeURIComponent(account)+"&time="+encodeURIComponent(time)+"&date="+encodeURIComponent(Date);
+        document.getElementById('Record-form').action = actw;
+        document.getElementById('Record-form').submit();
+    }
+
+
+    function addRecord()
+    {
+        window.location.href = "superAdd.php";
+    }
+
+
+    function salaryAdd()
+    {
+        window.location.href = "superSalaryAdd.php";
+    }
+    function salarySearch()
+    {
+        var month = document.getElementById('month');
+
+        var act = "superHome.php?month="+encodeURIComponent(month.value.replace(/-/g,""))+"&page=Spage";
+        
+        document.getElementById('Salary-form').action = act;
+        document.getElementById('Salary-form').submit();
+    }
+    
+    function deleteSalary(account,month)
+    {
+        var act = "deleteSalaryData.php?account="+encodeURIComponent(account)+"&month="+encodeURIComponent(month);
+        
+        document.getElementById('Salary-form').action = act;
+        document.getElementById('Salary-form').submit();
+    }
+    
+    // logout function
+
+    function Logout() {
+        alert("Logout successful");
+        window.location.href = "superLogin.php";
+    }
+
+    
+
 </script>
 
 </html>
