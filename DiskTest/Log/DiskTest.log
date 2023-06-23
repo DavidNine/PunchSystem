@@ -1,0 +1,49 @@
+
+Project                       : DiskTest
+
+Date                          : 2023-06-20 00:22:09
+
+LogPath                       : /home/ninebro/workspace/DiskTest/Log/DiskTest.log
+
+Command                       : ./DiskTest --run-list ./Log/test.log --time 3
+
+
+**************************************
+@ACT:scanning arguments start
+**************************************
+Detecting Output device       ...OK
+Detect mode setting           ...NULL
+Setting default mode          ...OK
+
+**************************************
+@ACT:show argments start
+**************************************
+Mode                          : sequent read
+List                          : ./Log/test.log
+Time                          : 3
+Seek                          : 0
+Skip                          : 0
+Count                         : 0
+Bypass                        : 0
+
+**************************************
+@ACT:check disks start
+**************************************
+Bypass mode                   : OFF
+Disk mode                     : run-list
+
+List path                     : ./Log/test.log
+
+Get Disk                      : /home/ninebro/workspace/DiskTest/Log/vda <Enable>
+Get Disk                      : /home/ninebro/workspace/DiskTest/Log/vdb <Enable>
+Get Disk                      : /home/ninebro/workspace/DiskTest/Log/vdc <Enable>
+
+**************************************
+@ACT:read/write disk start
+**************************************
+
+Total read                    : 27825201152 Bytes
+Total write                   : 0 Bytes
+
+Final result                  : PASS
+End time                      : 2023-06-20 00:22:13
